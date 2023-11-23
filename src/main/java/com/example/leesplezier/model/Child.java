@@ -13,16 +13,42 @@ public class Child {
     private LocalDate dob;
     private int grade;
 
-    @ManyToMany(mappedBy = "children")
-    HashSet<ReadingFocus> readingGoals;
+    @ManyToOne
+    @JoinColumn(name = "reading_focus_name", nullable = false)
+    private ReadingFocus readingFocus;
 
+    //Models have no constructors
+    //Getters and Setters
 
-//    private Set<Availability> availabilityList = new HashSet<>();
-//    private Set<Location> preferredLocations = new HashSet<>();
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    //     this.readingGoals = readingGoals;
-//        this.availabilityList = availabilityList;
-//        this.preferredLocations = preferredLocations;
+    public LocalDate getDob() {
+        return dob;
+    }
 
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
+
+    public ReadingFocus getReadingFocus() {
+        return readingFocus;
+    }
+
+    public void setReadingFocus(ReadingFocus readingFocus) {
+        this.readingFocus = readingFocus;
+    }
 }

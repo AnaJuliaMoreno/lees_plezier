@@ -1,34 +1,28 @@
 package com.example.leesplezier.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+;
 
 @Entity
 public class ReadingFocus {
     @Id
     @GeneratedValue
-    private Long id;
-    private String name;
+   private String name;
     private String description;
     private String usefulInfo;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "child_goals")
-    List<Child> children;
+    @OneToMany(mappedBy = "readingFocus",fetch = FetchType.EAGER)
+   @JsonIgnore
+    Collection<Child> children;
 
+    @OneToMany(mappedBy = "readingFocus",fetch = FetchType.EAGER)
+    @JsonIgnore
+    List<Book> books;
 
-    public ReadingFocus() {
-    }
-
-
-    public ReadingFocus(Long id, String name, String description, String usefulInfo) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.usefulInfo = usefulInfo;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -42,9 +36,6 @@ public class ReadingFocus {
         this.usefulInfo = usefulInfo;
     }
 
-    public Long getId() {
-        return id;
-    }
 
     public String getName() {
         return name;
