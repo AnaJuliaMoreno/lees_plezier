@@ -21,11 +21,6 @@ public class LocationService {
         this.lRepos = lRepos;
     }
 
-//    public LocationService(LocationRepository lRepos, WorkingHoursService whs, WorkingHoursRepository whrepos) {
-//        this.lRepos = lRepos;
-//        this.whrepos = whrepos;
-//        this.whs = whs;
-//    }
 
     public List<LocationDto> getAllLoc() {
         Iterable<Location> locList = lRepos.findAll();
@@ -55,20 +50,17 @@ public class LocationService {
     public LocationDto addLoc(LocationDto lDto) {
         lRepos.save(transferToLoc(lDto));
 
-
         return lDto;
     }
 
 
     // Mapping From Entity to DTO
-    public static LocationDto transferToDto(Location location) {
+    public LocationDto transferToDto(Location location) {
 
         LocationDto dto = new LocationDto();
         dto.setId(location.getId());
         dto.setNameLoc(location.getNameLoc());
         dto.setAddressLoc(location.getAddressLoc());
-
-
 
         return dto;
     }
@@ -78,14 +70,12 @@ public class LocationService {
     public Location transferToLoc(LocationDto lDto) {
         Location loc = new Location();
 
+        lDto.setId(loc.getId());
         loc.setNameLoc(lDto.getNameLoc());
         loc.setAddressLoc(lDto.getAddressLoc());
 
         lRepos.save(loc);
-        lDto.setId(loc.getId());
-
 
         return loc;
     }
-
 }

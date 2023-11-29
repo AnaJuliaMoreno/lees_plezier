@@ -1,54 +1,53 @@
 package com.example.leesplezier.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 
 @Entity
 public class Availability {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long timeSlotId;
-    private LocalDate avDate;
-    private int startsAt;
+    private Long id;
 
-    public Availability() {
+    private String day;
+
+    private int startAt;// time given in military style: 900 = 9am.
+
+    //Relationships
+    @ManyToOne
+    @JoinColumn(name = "child_id", nullable = false)
+    private Child child;
+
+    //Getters and setters
+    public Long getId() {
+        return id;
     }
 
-    public Availability(Long timeSlotId, LocalDate avDate, int startsAt) {
-
-        this.timeSlotId = timeSlotId;
-        this.avDate = avDate;
-        this.startsAt = startsAt;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Long getTimeSlotId() {
-        return timeSlotId;
+    public String getDay() {
+        return day;
     }
 
-    public void setTimeSlotId(Long timeSlotId) {
-        this.timeSlotId = timeSlotId;
+    public void setDay(String day) {
+        this.day = day;
     }
 
-    public LocalDate getLocalDate() {
-        return avDate;
+    public int getStartAt() {
+        return startAt;
     }
 
-    public void setLocalDate(LocalDate avDate) {
-        this.avDate = avDate;
+    public void setStartAt(int startAt) {
+        this.startAt = startAt;
     }
 
-    public int getStartsAt() {
-        return startsAt;
+    public Child getChild() {
+        return child;
     }
 
-    public void setStartsAt(int startsAt) {
-        this.startsAt = startsAt;
+    public void setChild(Child child) {
+        this.child = child;
     }
-
-
 }

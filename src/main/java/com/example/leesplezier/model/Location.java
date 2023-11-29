@@ -17,20 +17,15 @@ public class Location {
     private String addressLoc;
 
 
-
     @OneToMany(mappedBy = "location", fetch = FetchType.EAGER)
     @JsonIgnore
-    Collection<LocationSchedule> locationSchedules;
+   private Collection<LocationSchedule> locationSchedules;
 
+    @ManyToOne
+    @JoinColumn(name = "child_id")
+    private Child child;
 
-    //    public List<WorkingHours> getWorkingHours() {
-//        return workingHours;
-//    }
-//
-//    public void setWorkingHours(List<WorkingHours> workingHours) {
-//        this.workingHours = workingHours;
-//    }
-
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -61,6 +56,14 @@ public class Location {
 
     public void setLocationSchedules(Collection<LocationSchedule> locationSchedules) {
         this.locationSchedules = locationSchedules;
+    }
+
+    public Child getChild() {
+        return child;
+    }
+
+    public void setChild(Child child) {
+        this.child = child;
     }
 }
 

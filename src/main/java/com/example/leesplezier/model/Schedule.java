@@ -17,23 +17,13 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "s_generator")
     @SequenceGenerator(name = "s_generator", sequenceName = "schedule_seq", allocationSize = 1)
     private Long id;
-
-
     private String dayOfWeek;
-
     private int opensAt; //in minutes military style ex: 900 = 9:00
 
     private int closesAt;  //in minutes military style ex: 900 = 9:00
     @OneToMany(mappedBy = "schedule")
     @JsonIgnore
     List<LocationSchedule> locationScheduleList;
-
-
-//    @ManyToOne
-//    @MapsId("locationId")
-//    @JoinColumn(name = "location_id")
-//    private Location locations;
-
 
 
     public Long getId() {
@@ -43,7 +33,6 @@ public class Schedule {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public String getDayOfWeek() {
         return dayOfWeek;
@@ -68,16 +57,6 @@ public class Schedule {
     public void setClosesAt(int closesAt) {
         this.closesAt = closesAt;
     }
-
-//    public Location getLocation() {
-//        return location;
-//    }
-//
-//    public void setLocation(Location location) {
-//        this.location = location;
-//    }
-
-
 
     public List<LocationSchedule> getLocationScheduleList() {
         return locationScheduleList;

@@ -1,5 +1,11 @@
 package com.example.leesplezier.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -9,14 +15,15 @@ public class Book {
     private Long ISBN;
     private String title;
     private String author;
-    private String ageRange;
+    private int targetAge;
 
+    @ManyToMany
+    @JoinTable(name = "book_focus",
+            joinColumns = @JoinColumn(name = "ISBN"),
+            inverseJoinColumns = @JoinColumn(name = "reading_focus_name"))
+    private Set<ReadingFocus> bookFocus = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "reading_focus_name", nullable = false)
-    private ReadingFocus readingFocus;
-
-    public  Long getISBN() {
+    public Long getISBN() {
         return ISBN;
     }
 
@@ -40,5 +47,19 @@ public class Book {
         this.author = author;
     }
 
+    public int getTargetAge() {
+        return targetAge;
+    }
 
+    public void setTargetAge(int targetAge) {
+        this.targetAge = targetAge;
+    }
+
+    public Set<ReadingFocus> getBookFocus() {
+        return bookFocus;
+    }
+
+    public void setBookFocus(Set<ReadingFocus> bookFocus) {
+        this.bookFocus = bookFocus;
+    }
 }

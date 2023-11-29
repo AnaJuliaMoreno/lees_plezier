@@ -7,4 +7,10 @@ values(nextval('schedule_seq'), 1800,'monday',900),
       (nextval('schedule_seq'), 1800,'saturday',900);
 
 insert into location (id, address_loc, name_loc)
-VALUES(nextval('location_seq'),'Lamadreef 34', 'Zuilen')
+VALUES(nextval('location_seq'),'Lamadreef 34', 'Zuilen');
+
+insert into child(id, age, grade, name)
+VALUES(nextval('child_seq'), 10, 6, 'Sara');
+
+insert into book(ISBN, target_age, AUTHOR, TITLE)
+VALUES(9384593874534, 9, 'Tara Bach', 'Brave monster.');
