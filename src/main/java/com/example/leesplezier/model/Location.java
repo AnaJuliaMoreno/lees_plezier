@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -16,10 +18,12 @@ public class Location {
     private String nameLoc;
     private String addressLoc;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(name = "location_schedule",
+            joinColumns = @JoinColumn(name = "location_id"),
+            inverseJoinColumns = @JoinColumn(name = "schedule_id"))
+    private Set<Schedule> locationSchedules = new HashSet<>();
 
-    @OneToMany(mappedBy = "location", fetch = FetchType.EAGER)
-    @JsonIgnore
-   private Collection<LocationSchedule> locationSchedules;
 
     @ManyToOne
     @JoinColumn(name = "child_id")
@@ -50,11 +54,11 @@ public class Location {
         this.addressLoc = addressLoc;
     }
 
-    public Collection<LocationSchedule> getLocationSchedules() {
+    public Set<Schedule> getLocationSchedules() {
         return locationSchedules;
     }
 
-    public void setLocationSchedules(Collection<LocationSchedule> locationSchedules) {
+    public void setLocationSchedules(Set<Schedule> locationSchedules) {
         this.locationSchedules = locationSchedules;
     }
 

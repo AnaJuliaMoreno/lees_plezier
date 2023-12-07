@@ -6,26 +6,14 @@ import com.example.leesplezier.model.Schedule;
 import com.example.leesplezier.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ScheduleService {
 
     //dependency injection
-    private final ScheduleRepository sRepos;
+    private static ScheduleRepository sRepos;
 
-//    private final LocationRepository locationRepository;
-//    private final LocationService locationService;
-
-    //    public WorkingHoursService(WorkingHoursRepository whRepos,
-//                               LocationRepository locationRepository,
-//                               LocationService locationService) {
-//        this.whRepos = whRepos;
-//        this.locationRepository = locationRepository;
-//        this.locationService = locationService;
-//    }
     public ScheduleService(ScheduleRepository sRepos) {
         this.sRepos = sRepos;
     }
@@ -39,14 +27,10 @@ public class ScheduleService {
             dtos.add(transferToDto(schedule));
         }
         return dtos;
-//        return transferWHListToDtoList(whList);
-//
-//
-//    }
 
     }
 
-    public ScheduleDto getSchedule(Long id) {
+    public ScheduleDto getScheduleById(Long id) {
         Optional<Schedule> schedule = sRepos.findById(id);
         if (schedule.isPresent()) {
             ScheduleDto scheduleDto = transferToDto(schedule.get());
@@ -59,12 +43,13 @@ public class ScheduleService {
     public ScheduleDto addSchedule(ScheduleDto sDto) {
         Schedule schedule = transferToSchedule(sDto);
         sRepos.save(schedule);
+
         return transferToDto(schedule);
     }
-
-    public void deleteSchedule(Long id) {
-        sRepos.deleteById(id);
-    }
+    //Deleting a schedule is not necessary, besides it is not possible to do so if it has already been paired to a Location.
+//    public void deleteSchedule(Long id) {
+//        sRepos.deleteById(id);
+//    }
 
     public void updateSchedule(Long id, ScheduleDto whDto) {
 
@@ -81,7 +66,6 @@ public class ScheduleService {
     public Schedule transferToSchedule(ScheduleDto scheduleDto) {
         Schedule schedule = new Schedule();
 
-
         schedule.setDayOfWeek(scheduleDto.getDayOfWeek());
         schedule.setOpensAt(scheduleDto.getOpensAt());
         schedule.setClosesAt(scheduleDto.getClosesAt());
@@ -91,25 +75,10 @@ public class ScheduleService {
         return schedule;
     }
 
-//    public List<Schedule
-//   Dto> transferWHListToDtoList(List<WorkingHours> workingHoursList){
-//        List<WorkingHoursDto> whDtoList = new ArrayList<>();
-//
-//        for(WorkingHours wh : workingHoursList) {
-//            WorkingHoursDto dto = transferToDto(wh);
-//            if(wh.getLocationHours() != null){
-//                dto.setLocationDtoHashSet(locationService.tran(wh.getLocationHours()));
-//            }
-//            whDtoList.add(dto);
-//
-//        }
-//        return whDtoList;
-//    }
-
     // Mapping From Entity to DTO
     //1. Create a new instance of ClassDto called -dto.
     //2. Get the data from the Class object and set it to the -Dto object.
-    public static ScheduleDto transferToDto(Schedule schedule) {
+    public ScheduleDto transferToDto(Schedule schedule) {
         ScheduleDto dto = new ScheduleDto();
 
         dto.id = schedule.getId();
@@ -117,19 +86,31 @@ public class ScheduleService {
         dto.setOpensAt(schedule.getOpensAt());
         dto.setClosesAt(schedule.getClosesAt());
 
-        // if dto is public
-        //dto.closesAt = schedule.getClosesAt();
-
-//        for(LocationDto dto1: schedule){
-//
-//        }
-
-
-//        if(workingHours.getLocationHours() !=null){
-//            dto.setLocationDto(LocationService.transferToDto(workingHours.getLocationHours()));
-//        }
 
         return dto;
+    }
+
+    public Set<Schedule> transferToEntityList(Set<ScheduleDto> sDtoList){
+        Set<Schedule> scheduleList = new HashSet<>();
+
+        for(ScheduleDto dto: sDtoList){
+            Schedule schedule = transferToSchedule(dto);
+
+            schedule.setOpensAt(dto.getOpensAt());
+            schedule.setClosesAt(dto.getClosesAt());
+            schedule.setDayOfWeek(dto.getDayOfWeek());
+            scheduleList.add(schedule);
+            dto.id = schedule.getId();
+        }
+        return scheduleList;
+    }
+    public Set<ScheduleDto> transferScheduleListToDto (Set<Schedule> schedules){
+        Set<ScheduleDto> sDtoSet =new HashSet<>();
+        for(Schedule s: schedules){
+            ScheduleDto sDto = transferToDto(s);
+            sDtoSet.add(sDto);
+        }
+        return sDtoSet;
     }
 
 }

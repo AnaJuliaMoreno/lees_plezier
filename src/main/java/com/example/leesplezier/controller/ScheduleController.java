@@ -27,6 +27,12 @@ public class ScheduleController {
         return ResponseEntity.ok(sDtos);
     }
 
+    @GetMapping("/schedules/{id}")
+    public ResponseEntity<ScheduleDto> getScheduleById(@PathVariable("id") Long id){
+        ScheduleDto schedule = sService.getScheduleById(id);
+        return ResponseEntity.ok().body(schedule);
+    }
+
     @PostMapping("/schedule")
     public ResponseEntity<Object> addSchedule(@Valid @RequestBody ScheduleDto dto, BindingResult br) {
         if (br.hasFieldErrors()) {
@@ -47,16 +53,17 @@ public class ScheduleController {
             return ResponseEntity.created(uri).body(dto);
         }
     }
-    @DeleteMapping("/schedule/{id}")
-    public ResponseEntity<Object> deleteSchedule(@PathVariable("id") Long id){
-        sService.deleteSchedule(id);
-        return ResponseEntity.noContent().build();
-    }
+    //Deleting a schedule is not necessary, besides it is not possible to do so if it has already been paired to a Location.
+
+//    @DeleteMapping("/schedule/{id}")
+//    public ResponseEntity<Object> deleteSchedule(@PathVariable("id") Long id){
+//        sService.deleteSchedule(id);
+//        return ResponseEntity.noContent().build();
+//    }
 @PutMapping("schedule/{id}")
     public ResponseEntity<ScheduleDto> updateSchedule(@PathVariable("id") Long id, @RequestBody ScheduleDto scheduleDto){
         sService.updateSchedule(id, scheduleDto);
         return ResponseEntity.ok(scheduleDto);
     }
-
 
 }

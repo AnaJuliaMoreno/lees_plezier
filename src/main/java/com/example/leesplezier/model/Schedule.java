@@ -3,7 +3,9 @@ package com.example.leesplezier.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -21,10 +23,12 @@ public class Schedule {
     private int opensAt; //in minutes military style ex: 900 = 9:00
 
     private int closesAt;  //in minutes military style ex: 900 = 9:00
-    @OneToMany(mappedBy = "schedule")
-    @JsonIgnore
-    List<LocationSchedule> locationScheduleList;
 
+// Not necessary because relationship is unidirectional
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "locationSchedules")
+   private Set<Location> schedules = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -58,13 +62,13 @@ public class Schedule {
         this.closesAt = closesAt;
     }
 
-    public List<LocationSchedule> getLocationScheduleList() {
-        return locationScheduleList;
-    }
-
-    public void setLocationScheduleList(List<LocationSchedule> locationScheduleList) {
-        this.locationScheduleList = locationScheduleList;
-    }
+//    public Set<Location> getSchedules() {
+//        return schedules;
+//    }
+//
+//    public void setSchedules(Set<Location> schedules) {
+//        this.schedules = schedules;
+//    }
 }
 
 

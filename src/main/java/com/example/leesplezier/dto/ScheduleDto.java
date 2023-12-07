@@ -73,14 +73,4 @@ public class ScheduleDto {
         this.closesAt = closesAt;
     }
 
-//    public LocationDto getLocationDto() {
-//        return locationDto;
-//    }
-//
-//    public void setLocationDto(LocationDto locationDto) {
-//        this.locationDto = locationDto;
-//    }
-
-
-
 }
