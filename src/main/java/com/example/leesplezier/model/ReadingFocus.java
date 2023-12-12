@@ -26,7 +26,6 @@ public class ReadingFocus {
     private Set<Child> children = new HashSet<>();
 
     //No constructors
-
     //Getters and Setters
     public void setName(String name) {
         this.name = name;

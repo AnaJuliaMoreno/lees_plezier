@@ -3,7 +3,6 @@ package com.example.leesplezier.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -11,7 +10,6 @@ public class Child {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "ch_generator")
     @SequenceGenerator(name = "ch_generator", sequenceName = "child_seq", allocationSize = 1)
-
     private Long id;
     private String name;
     private int age;
@@ -37,8 +35,6 @@ public class Child {
 
     //Models have no constructors
     //Getters and Setters
-
-
     public Long getId() {
         return id;
     }

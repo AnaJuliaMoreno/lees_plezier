@@ -1,10 +1,8 @@
 package com.example.leesplezier.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -62,12 +60,12 @@ public class Location {
         this.locationSchedules = locationSchedules;
     }
 
-    public Child getChild() {
-        return child;
-    }
-
-    public void setChild(Child child) {
-        this.child = child;
-    }
+//    public Child getChild() {
+//        return child;
+//    }
+//
+//    public void setChild(Child child) {
+//        this.child = child;
+//    }
 }
 

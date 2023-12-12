@@ -11,6 +11,7 @@ public class LocationDto {
     private String addressLoc;
     private Set<Schedule> locationSchedules;
 
+    //Default Constructor
     public LocationDto() {
     }
 

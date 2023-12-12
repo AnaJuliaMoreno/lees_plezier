@@ -1,4 +1,4 @@
-package com.example.leesplezier.expection;
+package com.example.leesplezier.exception;
 
 public class BadRequestException extends RuntimeException{
 

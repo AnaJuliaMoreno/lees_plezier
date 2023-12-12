@@ -2,12 +2,11 @@ package com.example.leesplezier.service;
 
 import com.example.leesplezier.dto.LocationDto;
 import com.example.leesplezier.dto.ScheduleDto;
-import com.example.leesplezier.expection.RecordNotFoundException;
+import com.example.leesplezier.exception.RecordNotFoundException;
 import com.example.leesplezier.model.Location;
 import com.example.leesplezier.model.Schedule;
 import com.example.leesplezier.repository.LocationRepository;
 import com.example.leesplezier.repository.ScheduleRepository;
-import org.springframework.scheduling.annotation.Schedules;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

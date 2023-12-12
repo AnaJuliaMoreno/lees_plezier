@@ -25,3 +25,12 @@ VALUES (1, 1),
        (1, 6),
        (1, 7);
 
+insert into reading_focus(description, name, useful_info)
+VALUES ('Kids use this skill to sound out words they’ve heard before but haven’t seen written out. Decoding relies on an early language skill called phonemic awareness which lets kids hear individual sounds in words and “play” with sounds', 'Decoding', 'www.understood.org' ),
+       ('To read fluently, kids need to instantly recognize words, including words they can’t sound out. Fluency speeds up the rate at which they can read and understand text. It’s also important when kids encounter irregular words', 'Fluency', 'Exposure, repetition, build vocabulary. Children with dyslexia may need to see a word up to 40 times before they recognize it automatically. ');
+
+
+
+insert into child_focus(child_id, reading_focus_name)
+VALUES (1, 'Fluency'),
+       (1, 'Decoding');

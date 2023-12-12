@@ -1,7 +1,7 @@
 package com.example.leesplezier.service;
 
 import com.example.leesplezier.dto.ScheduleDto;
-import com.example.leesplezier.expection.RecordNotFoundException;
+import com.example.leesplezier.exception.RecordNotFoundException;
 import com.example.leesplezier.model.Schedule;
 import com.example.leesplezier.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
@@ -53,7 +53,7 @@ public class ScheduleService {
 
     public void updateSchedule(Long id, ScheduleDto whDto) {
 
-        Schedule updatedWH = sRepos.findById(id).orElseThrow(() -> new RecordNotFoundException("\"No opening hours found, try a different Id."));
+        Schedule updatedWH = sRepos.findById(id).orElseThrow(() -> new RecordNotFoundException("No opening hours found, try a different Id."));
         updatedWH.setId(whDto.getId());
         updatedWH.setDayOfWeek(whDto.getDayOfWeek());
         updatedWH.setOpensAt(whDto.getOpensAt());

@@ -1,22 +1,22 @@
 package com.example.leesplezier.dto;
 
+import com.example.leesplezier.model.Book;
+import com.example.leesplezier.model.Child;
+
+import java.util.Set;
+
 public class ReadingFocusDto {
     private String name;
     private String description;
     private String usefulInfo;
 
-    private BookDto bookDto;
-    private ChildDto childDto;
+    private Set<Book> books;
+//    private Set<Child> children;
 
-    //Constructors
+    //Default Constructor
     public ReadingFocusDto() {
     }
 
-    public ReadingFocusDto(String name, String description, String usefulInfo) {
-        this.name = name;
-        this.description = description;
-        this.usefulInfo = usefulInfo;
-    }
 //Getters & setters
     public String getName() {
         return name;
@@ -42,19 +42,19 @@ public class ReadingFocusDto {
         this.usefulInfo = usefulInfo;
     }
 
-    public BookDto getBookDto() {
-        return bookDto;
+    public Set<Book> getBooks() {
+        return books;
     }
 
-    public void setBookDto(BookDto bookDto) {
-        this.bookDto = bookDto;
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 
-    public ChildDto getChildDto() {
-        return childDto;
-    }
+    //public Set<Child> getChildren() {
+//        return children;
+//    }
 
-    public void setChildDto(ChildDto childDto) {
-        this.childDto = childDto;
-    }
+//    public void setChildren(Set<Child> children) {
+//        this.children = children;
+//    }
 }
