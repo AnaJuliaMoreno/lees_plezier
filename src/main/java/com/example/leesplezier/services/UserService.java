@@ -1,10 +1,8 @@
 package com.example.leesplezier.services;
 
 import com.example.leesplezier.dtos.UserDto;
-import com.example.leesplezier.exceptions.BadRequestException;
 import com.example.leesplezier.exceptions.RecordNotFoundException;
 import com.example.leesplezier.models.Role;
-//import com.example.leesplezier.models.Role1;
 import com.example.leesplezier.models.User;
 import com.example.leesplezier.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserService {
@@ -147,14 +144,14 @@ public class UserService {
 
     public User transferToUser(UserDto userDto) {
 
-        var user = new User();
+        User user = new User();
 
         user.setUsername(userDto.getUsername());
         user.setLastName(userDto.getLastName());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setEmail(userDto.getEmail());
         user.setRole(userDto.getRole());
-
+    userDto.setId(user.getId());
 
         return user;
     }

@@ -12,10 +12,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "ch_generator")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "user_generator")
     @SequenceGenerator(name = "user_generator", sequenceName = "user_seq", allocationSize = 1)
     private Long id;
 
@@ -31,54 +31,10 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
    private Role role;
-//    @OneToMany(targetEntity = Role.class,
-//            mappedBy = "username",
-//            fetch = FetchType.EAGER,
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true)
-//    private Set<Role> roles = new HashSet<>();
-//
 
-    public String getUsername() {
-        return username;
-    }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
-    }
+    //getters and setters
 
     public Long getId() {
         return id;
@@ -96,18 +52,21 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-//    public Set<Role> getRoles() {
-//        return roles;
-//    }
-//
-//    public void addRole(Role role) {
-//        this.roles.add(role);
-//    }
-//    public void removeRole(Role role) {
-//        this.roles.remove(role);
-//    }
+    public String getUsername() {
+        return username;
+    }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
     public String getEmail() {
         return email;
     }

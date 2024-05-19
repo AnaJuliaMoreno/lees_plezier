@@ -47,11 +47,12 @@ VALUES (1200, 1, 'tuesday');
 
 INSERT INTO users (id, username, password, role, email, last_name)
 VALUES
-    (1, 'JohnDoe', 'P@ssw0rd123', 'ROLE_VOLUNTEER', 'john.doe@example.com', 'Doe'),
-       (2, 'AliceSmith', 'Alic3_Sm1th', 'ROLE_PARENT', 'alice.smith@example.com', 'Smith'),
-       (3, 'MichaelJohnson', 'M1k3_J0hns0n', 'ROLE_PARENT', 'michael.johnson@example.com', 'Johnson'),
-       (4, 'EmilyBrown', 'Br0wnEm1ly', 'ROLE_VOLUNTEER', 'emily.brown@example.com', 'Brown'),
-       (5, 'DanielRodriguez', 'D@n13l_R0dr1gu3z', 'ROLE_VOLUNTEER', 'daniel.rodriguez@example.com',
+    (nextval('user_seq'), 'JohnDoe', 'P@ssw0rd123', 'ROLE_VOLUNTEER', 'john.doe@example.com', 'Doe'),
+       (nextval('user_seq'), 'AliceSmith', 'Alic3_Sm1th', 'ROLE_PARENT', 'alice.smith@example.com', 'Smith'),
+       (nextval('user_seq'), 'MichaelJohnson', 'M1k3_J0hns0n', 'ROLE_PARENT', 'michael.johnson@example.com', 'Johnson'),
+       (nextval('user_seq'), 'EmilyBrown', 'Br0wnEm1ly', 'ROLE_VOLUNTEER', 'emily.brown@example.com', 'Brown'),
+       (nextval('user_seq'), 'DanielRodriguez', 'D@n13l_R0dr1gu3z', 'ROLE_VOLUNTEER', 'daniel.rodriguez@example.com',
         'Rodriguez'),
-      (6, 'admin', 'password', 'ROLE_ADMIN', 'admin@example.com', 'admin');
+--     (6, 'parent', 'parent', 'ROLE_PARENT', 'parent@email.com', 'parent' ),
+      (nextval('user_seq'), 'admin', 'password', 'ROLE_ADMIN', 'admin@example.com', 'admin');
 

@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -26,12 +27,11 @@ public class SpringSecurityConfig {
     private final PasswordEncoder passwordEncoder;
 
 
-public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService, JwtRequestFilter jwtRequestFilter, PasswordEncoder passwordEncoder){
-    this.customUserDetailsService = customUserDetailsService;
-    this.passwordEncoder = passwordEncoder;
-    this.jwtRequestFilter = jwtRequestFilter;
-}
-
+    public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService, JwtRequestFilter jwtRequestFilter, PasswordEncoder passwordEncoder) {
+        this.customUserDetailsService = customUserDetailsService;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
@@ -53,9 +53,8 @@ public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService, J
                 .authorizeHttpRequests(auth ->
                         auth
                                 // Wanneer je deze uncomments, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
-                                           // .requestMatchers("/**").permitAll()
-                                .requestMatchers(HttpMethod.POST, "register", "/login").permitAll()
-                               .requestMatchers(HttpMethod.POST, "/users/parents").permitAll()
+                                      .requestMatchers("/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/users/parents").permitAll()
                                 .requestMatchers(HttpMethod.POST, "users/volunteers").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
 
@@ -86,9 +85,9 @@ public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService, J
                                 .requestMatchers(HttpMethod.PUT, "/children/**").hasAnyRole("ADMIN", "PARENT")
 
                                 .requestMatchers(HttpMethod.GET, "/sessions/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/sessions/create").hasAnyRole("ADMIN","VOLUNTEER")
-                                .requestMatchers(HttpMethod.DELETE, "/sessions/**").hasAnyRole("ADMIN","VOLUNTEER")
-                                .requestMatchers(HttpMethod.PUT, "/sessions").hasAnyRole("ADMIN","VOLUNTEER")
+                                .requestMatchers(HttpMethod.POST, "/sessions/create").hasAnyRole("ADMIN", "VOLUNTEER")
+                                .requestMatchers(HttpMethod.DELETE, "/sessions/**").hasAnyRole("ADMIN", "VOLUNTEER")
+                                .requestMatchers(HttpMethod.PUT, "/sessions").hasAnyRole("ADMIN", "VOLUNTEER")
 
                                 .requestMatchers("/authenticated").authenticated()
                                 .requestMatchers("/authenticate").permitAll()/*alleen dit punt mag toegankelijk zijn voor niet ingelogde gebruikers*/

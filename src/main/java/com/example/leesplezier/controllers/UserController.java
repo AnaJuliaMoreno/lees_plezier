@@ -59,30 +59,6 @@ public class UserController {
         }
     }
 
-//    @PostMapping(value = "/parents")
-//    public ResponseEntity<UserDto> createParent(@Valid @RequestBody UserDto dto) {
-//
-//        String newUsername = userService.createUser(dto);
-//        userService.addRole(newUsername, "ROLE_PARENT");
-//
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
-//                .buildAndExpand(newUsername).toUri();
-//
-//        return ResponseEntity.created(location).build();
-//    }
-//    @PostMapping(value = "/volunteers")
-//    public ResponseEntity<UserDto> createVolunteer(@Valid @RequestBody UserDto dto) {
-//
-//
-//        String newUsername = userService.createUser(dto);
-//        userService.addRole(newUsername, "ROLE_VOLUNTEER");
-//
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
-//                .buildAndExpand(newUsername).toUri();
-//
-//        return ResponseEntity.created(location).build();
-//    }
-
     @PutMapping(value = "/{username}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("username") String username, @RequestBody UserDto dto) {
 
@@ -98,26 +74,4 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-//    @GetMapping(value = "/{username}/roles")
-//    public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
-//        return ResponseEntity.ok().body(userService.getAllAuthorities(username));
-//    }
-
-//    @PostMapping(value = "/{username}/roles")
-//    public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
-//        try {
-//            String authorityName = (String) fields.get("authority");
-//            userService.addRole(username, authorityName);
-//            return ResponseEntity.noContent().build();
-//        }
-//        catch (Exception ex) {
-//            throw new BadRequestException();
-//        }
-//    }
-
-//    @DeleteMapping(value = "/{username}/roles/{role}")
-//    public ResponseEntity<Object> deleteUserRole(@PathVariable("username") String username, @PathVariable("role") String role) {
-//        userService.removeAuthority(username, role);
-//        return ResponseEntity.noContent().build();
-//    }
 }
