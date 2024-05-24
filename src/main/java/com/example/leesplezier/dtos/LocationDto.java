@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class LocationDto {
     private int id;
-    private String nameLoc;
+    private String name;
     private String addressLoc;
     private Set<Schedule> locationSchedules;
 
@@ -15,8 +15,8 @@ public class LocationDto {
     public LocationDto() {
     }
 
-    public LocationDto(String nameLoc, String addressLoc) {
-        this.nameLoc = nameLoc;
+    public LocationDto(String name, String addressLoc) {
+        this.name = name;
         this.addressLoc = addressLoc;
     }
     //Getters and Setters
@@ -30,12 +30,12 @@ public class LocationDto {
         this.id = id;
     }
 
-    public String getNameLoc() {
-        return nameLoc;
+    public String getName() {
+        return name;
     }
 
-    public void setNameLoc(String nameLoc) {
-        this.nameLoc = nameLoc;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddressLoc() {

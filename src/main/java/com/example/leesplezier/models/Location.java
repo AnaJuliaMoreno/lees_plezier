@@ -2,6 +2,7 @@ package com.example.leesplezier.models;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -11,7 +12,7 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "loc_generator")
     @SequenceGenerator(name = "loc_generator", sequenceName = "location_seq", allocationSize = 1)
     private int id;
-    private String nameLoc;
+    private String name;
     private String addressLoc;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
@@ -20,19 +21,19 @@ public class Location {
             inverseJoinColumns = @JoinColumn(name = "schedule_id"))
     private Set<Schedule> locationSchedules;
 
-//Location does not need to reference Child
-// it is a unidirectional relationship
-//    @ManyToOne
-//    @JoinColumn(name = "child_id")
-//    private Child child;
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Session> sessions = new HashSet<>();
 
 
     public Location() {
     }
 
-    public Location(String nameLoc, String addressLoc) {
-        this.nameLoc = nameLoc;
+    public Location(int id, String name, String addressLoc, Set<Schedule> locationSchedules, Set<Session> sessions) {
+        this.id = id;
+        this.name = name;
         this.addressLoc = addressLoc;
+        this.locationSchedules = locationSchedules;
+        this.sessions = sessions;
     }
 
     // Getters and Setters
@@ -44,12 +45,12 @@ public class Location {
         this.id = id;
     }
 
-    public String getNameLoc() {
-        return nameLoc;
+    public String getName() {
+        return name;
     }
 
-    public void setNameLoc(String nameLoc) {
-        this.nameLoc = nameLoc;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddressLoc() {
@@ -68,12 +69,12 @@ public class Location {
         this.locationSchedules = locationSchedules;
     }
 
-//    public Child getChild() {
-//        return child;
-//    }
-//
-//    public void setChild(Child child) {
-//        this.child = child;
-//    }
+    public Set<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(Set<Session> sessions) {
+        this.sessions = sessions;
+    }
 }
 

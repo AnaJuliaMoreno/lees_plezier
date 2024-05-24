@@ -36,10 +36,10 @@ public class ChildController {
         return ResponseEntity.ok().body(childDto);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Object> addChild(@Valid @RequestBody ChildDto childDto, BindingResult br) {
         if (br.hasFieldErrors()) {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             for (FieldError fe : br.getFieldErrors()) {
                 sb.append(fe.getField());
                 sb.append(" : ");
@@ -48,11 +48,11 @@ public class ChildController {
             }
             return ResponseEntity.badRequest().body(sb.toString());
         } else {
-            chService.addChild(childDto);
+            ChildDto savedChild = chService.addChild(childDto);
             URI uri = URI.create(ServletUriComponentsBuilder
-                    .fromCurrentRequest().path("/" + childDto.getId()).toUriString());
-
-            return ResponseEntity.created(uri).body(childDto);
+                    .fromCurrentRequest().path("/{id}")
+                    .buildAndExpand(savedChild.getId()).toUriString());
+            return ResponseEntity.created(uri).body(savedChild);
         }
     }
 
@@ -63,7 +63,7 @@ public class ChildController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}/reading_focus/{name}")
+    @PutMapping("/{id}/concepts/{name}")
     public ResponseEntity<Object> assignFocusToChild(@PathVariable("id") Long id, @PathVariable("name") String name) {
 
         chService.assignFocus(id, name);

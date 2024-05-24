@@ -1,14 +1,13 @@
 package com.example.leesplezier.controllers;
 
 import com.example.leesplezier.dtos.SessionDto;
-import com.example.leesplezier.dtos.SessionInputDto;
 
 import com.example.leesplezier.services.SessionService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -39,16 +38,27 @@ public class SessionController {
         return ResponseEntity.ok().body(sessionDto);
     }
 
-    @PostMapping("create")
-    public ResponseEntity<SessionDto> createSession(@Valid @RequestBody SessionInputDto inputDto) {
-            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            inputDto.setUserName(user.getUsername());
-           var sessionDto = sService.createSession(inputDto);
+    @PostMapping("/create")
+    public ResponseEntity<Object> createSession(@Valid @RequestBody SessionDto sessionDto, BindingResult br) {
+
+
+        if (br.hasFieldErrors()) {
+            var sb = new StringBuilder();
+            for (FieldError fe : br.getFieldErrors()) {
+                sb.append(fe.getField());
+                sb.append(" : ");
+                sb.append(fe.getDefaultMessage());
+                sb.append("\n");
+            }
+            return ResponseEntity.badRequest().body(sb.toString());
+        } else {
+
+            sService.createSession(sessionDto);
             URI uri = URI.create(ServletUriComponentsBuilder
-                    .fromCurrentRequest().path("/" + sessionDto.getId()).toUriString());
+                    .fromCurrentRequest().path("/{id}" + sessionDto.getId()).toUriString());
 
             return ResponseEntity.created(uri).body(sessionDto);
-
+        }
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteSession(@PathVariable("id") Long id) {

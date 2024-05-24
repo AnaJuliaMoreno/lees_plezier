@@ -6,6 +6,7 @@ import com.example.leesplezier.exceptions.BadRequestException;
 import com.example.leesplezier.exceptions.RecordNotFoundException;
 import com.example.leesplezier.models.Availability;
 import com.example.leesplezier.models.Child;
+import com.example.leesplezier.models.Location;
 import com.example.leesplezier.models.ReadingFocus;
 import com.example.leesplezier.repositories.ChildRepository;
 import com.example.leesplezier.repositories.LocationRepository;
@@ -17,11 +18,11 @@ import java.util.List;
 
 @Service
 public class ChildService {
-    private ChildRepository chRepos;
-    private LocationRepository lRepos;
-    private LocationService lService;
-    private ReadingFocusRepository rfRepos;
-    private ReadingFocusService rfService;
+    private  ChildRepository chRepos;
+    private  LocationRepository lRepos;
+    private  LocationService lService;
+    private  ReadingFocusRepository rfRepos;
+    private  ReadingFocusService rfService;
 
     private ChildService(ChildRepository chRepos, LocationRepository lRepos, LocationService lService, ReadingFocusRepository rfRepos, ReadingFocusService rfService) {
         this.chRepos = chRepos;
@@ -42,27 +43,28 @@ public class ChildService {
 
     public ChildDto getChild(Long id) {
         Child ch = chRepos.findById(id).orElseThrow(() -> new RecordNotFoundException("Child not found"));
-
         ChildDto childDto = transferToDto(ch);
 
         return childDto;
     }
 
     public ChildDto addChild(ChildDto childDto) {
-        var child = transferToChild(childDto);
-
+        Child child = transferToChild(childDto);
         chRepos.save(child);
 
         return transferToDto(child);
     }
 
     public void deleteChild(Long id) {
+        if (!chRepos.existsById(id)) {
+            throw new RecordNotFoundException("Child not found");
+        }
         chRepos.deleteById(id);
     }
 
     public void assignLocation(Long id, String locationName) {
         var optionalChild = chRepos.findById(id);
-        var location = lRepos.findByNameLocEqualsIgnoreCase(locationName);
+        var location = lRepos.findByNameEqualsIgnoreCase(locationName);
 
         if (optionalChild.isEmpty()) {
             throw new RecordNotFoundException("No child found with that id.");
@@ -70,7 +72,9 @@ public class ChildService {
         }
         if (location != null) {
             var child = optionalChild.get();
-            child.setLocation(location);
+            List<Location> locations = new ArrayList<>(child.getLocations());
+            locations.add(location);
+            child.setLocations(locations);
             chRepos.save(child);
         } else {
             throw new RecordNotFoundException("No location found.");
@@ -90,7 +94,9 @@ public class ChildService {
                     throw new BadRequestException("This reading focus has already been added.");
                 }
             }
-            child.getChildFocus().add(optionalFocus);
+            List<ReadingFocus> childFocus = new ArrayList<>(child.getChildFocus());
+            childFocus.add(optionalFocus);
+            child.setChildFocus(childFocus);
             chRepos.save(child);
 
         } else {
@@ -102,9 +108,10 @@ public class ChildService {
     public void updateChild(Long id, ChildDto childDto) {
         Child updatedChild = chRepos.findById(id).orElseThrow(() -> new RecordNotFoundException("No child has been found with that id."));
         updatedChild.setName(childDto.getName());
-        updatedChild.setGrade(childDto.getGrade());
         updatedChild.setAge(childDto.getAge());
         updatedChild.setAvailabilityList(avToEntity(childDto.getAvailabilityList()));
+        updatedChild.setLocations(convertToLocationEntities(childDto.getLocationsList()));
+        updatedChild.setChildFocus(convertToFocusEntities(childDto.getFocusList()));
         chRepos.save(updatedChild);
 
     }
@@ -115,33 +122,34 @@ public class ChildService {
         Child child = new Child();
 
         child.setName(childDto.getName());
-        child.setGrade(childDto.getGrade());
         child.setAge(childDto.getAge());
         child.setAvailabilityList(avToEntity(childDto.getAvailabilityList()));
-        chRepos.save(child);
+        child.setLocations(convertToLocationEntities(childDto.getLocationsList()));
+        child.setChildFocus(convertToFocusEntities(childDto.getFocusList()));
+      //  chRepos.save(child);
         childDto.setId(child.getId());
 
         return child;
     }
 
-    public static List<Availability> avToEntity(List<AvailabilityDto> aDto){
+    public static List<Availability> avToEntity(List<AvailabilityDto> availabilityDtos){
         List<Availability> availabilityList = new ArrayList<>();
-        for(AvailabilityDto a: aDto){
+        for(AvailabilityDto dto: availabilityDtos){
             Availability availability = new Availability();
-            availability.setDay(a.getDay());
-            availability.setStartAt(a.getStartAt());
+            availability.setDay(dto.getDay());
+            availability.setStartAt(dto.getStartAt());
             availabilityList.add(availability);
         }
         return availabilityList;
     }
 
     public static List<AvailabilityDto> avToDto(List<Availability> availabilityList) {
-        List<AvailabilityDto> aDto = new ArrayList<>();
+        List<AvailabilityDto> aDtos = new ArrayList<>();
         for (Availability a : availabilityList) {
             AvailabilityDto dto = new AvailabilityDto(a.getDay(), a.getStartAt());
-            aDto.add(dto);
+            aDtos.add(dto);
         }
-        return aDto;
+        return aDtos;
     }
 
 
@@ -152,23 +160,42 @@ public class ChildService {
         childDto.setId(child.getId());
         childDto.setName(child.getName());
         childDto.setAge(child.getAge());
-        childDto.setGrade(child.getGrade());
-
         childDto.setAvailabilityList(avToDto(child.getAvailabilityList()));
 
-        if (child.getLocation() != null) {
-            childDto.setLocation(child.getLocation().getNameLoc());
+        List<String> locationNames = new ArrayList<>();
+        for (Location location : child.getLocations()) {
+            locationNames.add(location.getName());
         }
+        childDto.setLocationsList(locationNames);
 
-        if (child.getChildFocus() != null) {
-            List<String> focusList = new ArrayList<>();
-            for (ReadingFocus rf : child.getChildFocus()) {
-                focusList.add(rf.getName());
-            }
-            childDto.setFocusList(focusList);
+        List<String> focusNames = new ArrayList<>();
+        for (ReadingFocus focus : child.getChildFocus()) {
+            focusNames.add(focus.getName());
         }
+        childDto.setFocusList(focusNames);
 
 
         return childDto;
+    }
+
+
+    private List<Location> convertToLocationEntities(List<String> locationNames) {
+        List<Location> locations = new ArrayList<>();
+        for (String name : locationNames) {
+            Location location = lRepos.findByNameEqualsIgnoreCase(name);
+            if (location == null) {
+                throw new RecordNotFoundException("Location not found: " + name);
+            }
+            locations.add(location);
+        }
+        return locations;
+    }
+    private List<ReadingFocus> convertToFocusEntities(List<String> focusNames) {
+        List<ReadingFocus> readingFocuses = new ArrayList<>();
+        for (String name : focusNames) {
+            ReadingFocus readingFocus = rfRepos.findByNameContainingIgnoreCase(name);
+            readingFocuses.add(readingFocus);
+        }
+        return readingFocuses;
     }
 }

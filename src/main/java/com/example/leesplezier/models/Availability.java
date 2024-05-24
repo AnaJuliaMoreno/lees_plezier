@@ -2,12 +2,14 @@ package com.example.leesplezier.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalTime;
+
 
 @Embeddable
 public class Availability {
     private String day;
 
-    private int startAt;// time given in military style: 900 = 9am.
+    private LocalTime startAt;
 
     public String getDay() {
         return day;
@@ -17,12 +19,11 @@ public class Availability {
         this.day = day;
     }
 
-    public int getStartAt() {
+    public LocalTime getStartAt() {
         return startAt;
     }
 
-    public void setStartAt(int startAt) {
+    public void setStartAt(LocalTime startAt) {
         this.startAt = startAt;
     }
-
 }

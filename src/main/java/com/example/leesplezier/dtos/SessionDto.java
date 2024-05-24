@@ -3,29 +3,19 @@ package com.example.leesplezier.dtos;
 import com.example.leesplezier.models.Availability;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalTime;
 
 public class SessionDto {
-private Long id;
-   private String username;
-
-    private LocalDate creationDate;
-
-    private String childName;
-
+    private Long id;
+    private LocalDate sessionDate;
+    private String volunteersName;
+    private LocalTime startTime;
     private String locationName;
-    private List<Availability> availabilityList;
+    private String username;
+    private String comment;
+
 
     public SessionDto() {
-    }
-
-    public SessionDto(Long id, String username, LocalDate creationDate, String childName, String locationName, List<Availability> availabilityList) {
-        this.id = id;
-        this.username = username;
-        this.creationDate = creationDate;
-        this.childName = childName;
-        this.locationName = locationName;
-        this.availabilityList = availabilityList;
     }
 
     public Long getId() {
@@ -36,12 +26,37 @@ private Long id;
         this.id = id;
     }
 
-    public String getChildName() {
-        return childName;
+    public LocalDate getSessionDate() {
+        return sessionDate;
     }
 
-    public void setChildName(String childName) {
-        this.childName = childName;
+    public void setSessionDate(LocalDate sessionDate) {
+        this.sessionDate = sessionDate;
+    }
+
+    public String getVolunteersName() {
+        return volunteersName;
+    }
+
+    public void setVolunteersName(String volunteersName) {
+        this.volunteersName = volunteersName;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 
     public String getUsername() {
@@ -52,27 +67,11 @@ private Long id;
         this.username = username;
     }
 
-    public LocalDate getDate() {
-        return creationDate;
+    public String getComment() {
+        return comment;
     }
 
-    public void setDate(LocalDate date) {
-        this.creationDate = date;
-    }
-
-    public String getLocationName() {
-        return locationName;
-    }
-
-    public void setLocationName(String locationName) {
-        this.locationName = locationName;
-    }
-
-    public List<Availability> getAvailabilityList() {
-        return availabilityList;
-    }
-
-    public void setAvailabilityList(List<Availability> availabilityList) {
-        this.availabilityList = availabilityList;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

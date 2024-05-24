@@ -3,7 +3,8 @@ package com.example.leesplezier.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalTime;
+
 
 @Entity
 public class Session {
@@ -13,29 +14,23 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "session_generator")
     @SequenceGenerator(name = "session_generator", sequenceName = "session_seq", allocationSize = 1)
     private Long id;
-    private LocalDate creationDate;
+    private LocalDate sessionDate;
+
+private String volunteersName;
+
+private LocalTime startTime;
 
     @ManyToOne
-    @JoinColumn(name = "child_id")
-    private Child child;
-
-
+    @JoinColumn(name = "location_id")
+private Location location;
 
     @ManyToOne
-    @JoinColumn(name = "username")
+    @JoinColumn(name = "user_id")
     private User user;
 
+    private String comment;
+
     public Session() {
-    }
-
-
-    //Getters and setters
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public LocalDate getCreationDate() {
-        return creationDate;
     }
 
     public Long getId() {
@@ -46,20 +41,53 @@ public class Session {
         this.id = id;
     }
 
-    public Child getChild() {
-        return child;
+    public LocalDate getSessionDate() {
+        return sessionDate;
     }
 
-    public void setChild(Child child) {
-        this.child = child;
+    public void setSessionDate(LocalDate sessionDate) {
+        this.sessionDate = sessionDate;
     }
 
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
 
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public String getVolunteersName() {
+        return volunteersName;
+    }
+
+    public void setVolunteersName(String volunteersName) {
+        this.volunteersName = volunteersName;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }

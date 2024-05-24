@@ -13,7 +13,6 @@ public class Child {
     private Long id;
     private String name;
     private int age;
-    private int grade;
 
     // Relationships
     @ManyToMany
@@ -23,11 +22,14 @@ public class Child {
     private List<ReadingFocus> childFocus;
 
     @ElementCollection
+    @CollectionTable(name = "child_availability", joinColumns = @JoinColumn(name = "child_id"))
     private List<Availability> availabilityList;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "location_id")
-    private Location location;
+    @ManyToMany
+    @JoinTable(name = "child_location",
+            joinColumns = @JoinColumn(name = "child_id"),
+            inverseJoinColumns = @JoinColumn(name = "location_id"))
+    private List<Location> locations;
 
 
 
@@ -57,13 +59,6 @@ public class Child {
         this.age = age;
     }
 
-    public int getGrade() {
-        return grade;
-    }
-
-    public void setGrade(int grade) {
-        this.grade = grade;
-    }
 
     public List<ReadingFocus> getChildFocus() {
         return childFocus;
@@ -81,12 +76,11 @@ public class Child {
         this.availabilityList = availabilityList;
     }
 
-    public Location getLocation() {
-        return location;
+    public List<Location> getLocations() {
+        return locations;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
-
 }

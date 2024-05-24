@@ -1,11 +1,11 @@
 package com.example.leesplezier.services;
 
 import com.example.leesplezier.dtos.SessionDto;
-import com.example.leesplezier.dtos.SessionInputDto;
-import com.example.leesplezier.exceptions.BadRequestException;
 import com.example.leesplezier.exceptions.RecordNotFoundException;
+import com.example.leesplezier.models.Location;
 import com.example.leesplezier.models.Session;
-import com.example.leesplezier.repositories.ChildRepository;
+import com.example.leesplezier.models.User;
+import com.example.leesplezier.repositories.LocationRepository;
 import com.example.leesplezier.repositories.SessionRepository;
 import com.example.leesplezier.repositories.UserRepository;
 
@@ -14,21 +14,23 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SessionService {
     private final SessionRepository sRepos;
     private final UserRepository uRepos;
     private final UserService uService;
-    private final ChildService chService;
-    private final ChildRepository chRepos;
+    private final LocationService locationService;
+    private final LocationRepository locationRepository;
 
-    public SessionService(SessionRepository sRepos, UserRepository uRepos, UserService uService, ChildService chService, ChildRepository chRepos) {
+
+    public SessionService(SessionRepository sRepos, UserRepository uRepos, UserService uService, LocationService locationService, LocationRepository locationRepository) {
         this.sRepos = sRepos;
         this.uRepos = uRepos;
-        this.chService = chService;
-        this.chRepos = chRepos;
         this.uService = uService;
+        this.locationService = locationService;
+        this.locationRepository = locationRepository;
     }
 
     public List<SessionDto> getAllSessions() {
@@ -49,28 +51,12 @@ public class SessionService {
 
     }
 
-    public SessionDto createSession(SessionInputDto dto) {
+    public SessionDto createSession(SessionDto dto) {
 
         Session session = transferToSession(dto);
+        Session savedSession = sRepos.save(session);
 
-        if (chRepos.existsById(dto.getChildId())) {
-            var child = chRepos.findById(dto.getChildId()).get();
-            if (child.getLocation() != null) {
-                session.setChild(child);
-            } else {
-                throw new BadRequestException("Child has to choose a location before being able to participate in a session.");
-            }
-
-
-        } else {
-            throw new RecordNotFoundException("No id found");
-        }
-
-        session.setCreationDate(LocalDate.now());
-
-        sRepos.save(session);
-
-        return transferToDto(session);
+        return transferToDto(savedSession);
     }
 
     public void deleteSession(Long id) {
@@ -86,37 +72,48 @@ public class SessionService {
     public static SessionDto transferToDto(Session session) {
         SessionDto dto = new SessionDto();
         dto.setId(session.getId());
-        dto.setDate(session.getCreationDate());
+        dto.setSessionDate(session.getSessionDate());
+        dto.setStartTime(session.getStartTime());
+        dto.setVolunteersName(session.getVolunteersName());
+        dto.setComment(session.getComment());
 
-
-        if (session.getChild() != null) {
-
-            dto.setChildName(session.getChild().getName());
-            dto.setLocationName(session.getChild().getLocation().getNameLoc());
-            dto.setAvailabilityList(session.getChild().getAvailabilityList());
+        Location location = session.getLocation();
+        if (location != null && location.getName() != null) {
+            dto.setLocationName(location.getName());
         }
-//        if (session.getUser() != null) {
-//            dto.setUsername((session.getUser().getUsername()));
-//        }
 
+        User user = session.getUser();
+        if (user != null) {
+            dto.setUsername(user.getUsername());
+        }
 
         return dto;
 
     }
 
-    public Session transferToSession(SessionInputDto inputDto) {
+    public Session transferToSession(SessionDto sessionDto) {
         var session = new Session();
 
+        session.setSessionDate(sessionDto.getSessionDate());
+        session.setVolunteersName(sessionDto.getVolunteersName());
+        session.setStartTime(sessionDto.getStartTime());
+        session.setComment(sessionDto.getComment());
 
-        session.setChild(chService.transferToChild(chService.getChild(inputDto.getChildId())));
+
+        String locationName = sessionDto.getLocationName();
+        if (locationName != null) {
+            Location location = locationRepository.findByNameEqualsIgnoreCase(locationName);
+            if (location != null) {
+                session.setLocation(location);
+            }
+        }
 
 
-//        session.setUser(uService.transferToUser(uService.getUser(inputDto.getUserName())));
-
-
-        sRepos.save(session);
-
-        inputDto.setId(session.getId());
+        String username = sessionDto.getUsername();
+        if (username != null) {
+            Optional<User> userOptional = uRepos.findByUsername(username);
+          userOptional.ifPresent(session::setUser);
+        }
 
         return session;
     }

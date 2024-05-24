@@ -36,9 +36,8 @@ class LocationServiceTest {
     @Test
     void getAllLoc() {
         //arrange
-        Location location1 = new Location("Zuilen", "Picodreef 5");
-        location1.setId(1);
-        Location location2 = new Location("Hooggraven", "Concordia 4");
+        Location location1 = new Location(1, "Zuilen", "Picodreef 5", new HashSet<>(), new HashSet<>());
+        Location location2 = new Location(2, "Hooggraven", "Concordia 4", new HashSet<>(), new HashSet<>());
         location2.setId(2);
 
         List<Location> locations = Arrays.asList(location1, location2);
@@ -51,12 +50,12 @@ class LocationServiceTest {
 
         LocationDto locationDto1 = locationDtoList.get(0);
         assertEquals(1, locationDto1.getId());
-        assertEquals("Zuilen", locationDto1.getNameLoc());
+        assertEquals("Zuilen", locationDto1.getName());
         assertEquals("Picodreef 5", locationDto1.getAddressLoc());
 
         LocationDto locationDto2 = locationDtoList.get(1);
         assertEquals(2, locationDto2.getId());
-        assertEquals("Hooggraven", locationDto2.getNameLoc());
+        assertEquals("Hooggraven", locationDto2.getName());
         assertEquals("Concordia 4", locationDto2.getAddressLoc());
 
     }
@@ -65,14 +64,14 @@ class LocationServiceTest {
     @DisplayName("Creates location and returns locationDto")
     void getLocationById() {
         //arrange
-        Location location = new Location("Zuilen", "Picodreef 5");
+        Location location = new Location(11, "Zuilen", "Picodreef 5", new HashSet<>(), new HashSet<>());
         location.setId(11);
         when(lRepos.findById(anyInt())).thenReturn(Optional.of(location));
 
         // act
         LocationDto ldto = service.getLocationById(11);
         //assert
-        assertEquals("Zuilen", ldto.getNameLoc());
+        assertEquals("Zuilen", ldto.getName());
         assertEquals("Picodreef 5", ldto.getAddressLoc());
     }
 
@@ -82,15 +81,14 @@ class LocationServiceTest {
         // Arrange
 
         LocationDto locationDto = new LocationDto("Zuilen", "Picodreef 5");
-        Location location = new Location("Zuilen", "Picodreef 5");
-        location.setId(11);
+        Location location = new Location(11, "Zuilen", "Picodreef 5", new HashSet<>(), new HashSet<>());
         when(lRepos.save(any(Location.class))).thenReturn(location);
 
         // Act
         LocationDto addedLocationDto = service.addLoc(locationDto);
 
         // Assert
-        assertEquals("Zuilen", addedLocationDto.getNameLoc());
+        assertEquals("Zuilen", addedLocationDto.getName());
         assertEquals("Picodreef 5", addedLocationDto.getAddressLoc());
 
     }

@@ -13,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/reading_focus")
+@RequestMapping(value = "/concepts")
 public class ReadingFocusController {
     private final ReadingFocusService rfService;
 

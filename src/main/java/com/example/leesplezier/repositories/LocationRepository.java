@@ -6,5 +6,5 @@ import java.util.List;
 
 
 public interface LocationRepository extends JpaRepository<Location, Integer> {
-Location findByNameLocEqualsIgnoreCase(String nameLoc);
+Location findByNameEqualsIgnoreCase(String nameLoc);
 }

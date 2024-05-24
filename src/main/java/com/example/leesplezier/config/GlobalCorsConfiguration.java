@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-//Vergeet niet om in de security config ook de ".cors()" optie aan te zetten.
 @Configuration
 public class GlobalCorsConfiguration {
     @Bean

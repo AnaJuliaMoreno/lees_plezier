@@ -58,16 +58,13 @@ public class LocationService {
 
 
     public void assignOneScheduleToLocation(int locationId, int scheduleId) {
-        Set<Schedule> schedules = new HashSet<>();
         var optionalLocation = lRepos.findById(locationId);
         var optionalSchedule = sRepos.findById(scheduleId);
         if (optionalLocation.isPresent() && optionalSchedule.isPresent()) {
             var location = optionalLocation.get();
             var schedule = optionalSchedule.get();
-            schedules.add(schedule);
-            location.setLocationSchedules(schedules);
+            location.getLocationSchedules().add(schedule);
             lRepos.save(location);
-
 
         } else {
             throw new RecordNotFoundException("No matching location-schedule found.");
@@ -117,18 +114,6 @@ public class LocationService {
         }
     }
 
-//            var optionalLocation = lRepos.findById(id);
-//
-//            if (optionalLocation.isPresent()) {
-//                var location = optionalLocation.get();
-//                //Set<Schedule> schedules = location.getLocationSchedules();
-//                for (Schedule s : location.getLocationSchedules())
-//                    if(s.getId() == scheduleId){
-//                        sRepos.deleteById(scheduleId);
-//                    };
-//                lRepos.save(location);
-//            } else {
-//                throw new RecordNotFoundException("Please try again");
 
 
     // Mapping From Entity to DTO
@@ -136,7 +121,7 @@ public class LocationService {
 
         LocationDto dto = new LocationDto();
         dto.setId(location.getId());
-        dto.setNameLoc(location.getNameLoc());
+        dto.setName(location.getName());
         dto.setAddressLoc(location.getAddressLoc());
         dto.setLocationSchedules(location.getLocationSchedules());
 
@@ -149,10 +134,9 @@ public class LocationService {
     public Location transferToLoc(LocationDto lDto) {
         Location loc = new Location();
 
-        loc.setNameLoc(lDto.getNameLoc());
+        loc.setName(lDto.getName());
         loc.setAddressLoc(lDto.getAddressLoc());
         loc.setLocationSchedules(lDto.getLocationSchedules());
-        lRepos.save(loc);
         lDto.setId(loc.getId());
 
         return loc;

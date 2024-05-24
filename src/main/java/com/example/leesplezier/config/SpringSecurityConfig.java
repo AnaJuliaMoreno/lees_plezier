@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -52,39 +51,41 @@ public class SpringSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                         auth
-                                // Wanneer je deze uncomments, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
+                                // Wanneer je deze uncomment, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
                                       .requestMatchers("/**").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/users/parents").permitAll()
-                                .requestMatchers(HttpMethod.POST, "users/volunteers").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
 
-                                .requestMatchers(HttpMethod.GET, "/locations").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/users/create").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN", "VOLUNTEER", "PARENT")
+
+                                .requestMatchers(HttpMethod.GET, "/locations")
+
+                                .permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/locations/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/locations").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/locations").hasRole("ADMIN")
 
-                                .requestMatchers(HttpMethod.GET, "/reading_focus/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/reading_focus").permitAll()
-                                .requestMatchers(HttpMethod.DELETE, "/reading_focus").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/reading_focus").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/reading_focus").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/concepts/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/concepts").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/concepts").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/concepts").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/concepts").hasRole("ADMIN")
 
                                 .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/books").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/books").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/books").hasAnyRole("ADMIN", "VOLUNTEER", "PARENT")
                                 .requestMatchers(HttpMethod.PUT, "/books").hasRole("ADMIN")
 
                                 .requestMatchers(HttpMethod.GET, "/schedules").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/schedules").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/schedules").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/schedules/**").hasRole("ADMIN")
 
                                 .requestMatchers(HttpMethod.GET, "/children/**").hasAnyRole("VOLUNTEER", "ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/children").hasAnyRole("PARENT", "ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/children/create/**").hasAnyRole("PARENT", "ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/children/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/children/**").hasAnyRole("ADMIN", "PARENT")
 
-                                .requestMatchers(HttpMethod.GET, "/sessions/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/sessions").hasAnyRole("ADMIN", "VOLUNTEER", "PARENT")
                                 .requestMatchers(HttpMethod.POST, "/sessions/create").hasAnyRole("ADMIN", "VOLUNTEER")
                                 .requestMatchers(HttpMethod.DELETE, "/sessions/**").hasAnyRole("ADMIN", "VOLUNTEER")
                                 .requestMatchers(HttpMethod.PUT, "/sessions").hasAnyRole("ADMIN", "VOLUNTEER")
