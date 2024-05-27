@@ -57,9 +57,7 @@ public class SpringSecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/users/create").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users/**").hasAnyRole("ADMIN", "VOLUNTEER", "PARENT")
 
-                                .requestMatchers(HttpMethod.GET, "/locations")
-
-                                .permitAll()
+                                .requestMatchers(HttpMethod.GET, "/locations").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/locations/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/locations").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/locations").hasRole("ADMIN")
@@ -72,7 +70,7 @@ public class SpringSecurityConfig {
 
                                 .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/books").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/books").hasAnyRole("ADMIN", "VOLUNTEER", "PARENT")
+                                .requestMatchers(HttpMethod.POST, "/books").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/books").hasRole("ADMIN")
 
                                 .requestMatchers(HttpMethod.GET, "/schedules").permitAll()

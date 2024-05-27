@@ -48,16 +48,6 @@ public class UserService {
         return userRepository.existsById(username);
     }
 
-//    public boolean userIsVolunteer(String username) {
-//        if (!userRepository.existsById(username)) throw new RecordNotFoundException("No user found");
-//        var optionalUser = userRepository.findById(username).get();
-//        for (Role r : optionalUser.getRole()) {
-//            if (!r.getRole().equalsIgnoreCase("volunteer"))
-//                throw new BadRequestException("Only volunteers can create a session");
-//
-//        }
-//        return true;
-//    }
 
     public String createUser(UserDto userDto) {
 
@@ -77,35 +67,12 @@ public class UserService {
         userRepository.save(user);
     }
 
-//    public Set<Role> getAllAuthorities(String username) {
-//        if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
-//        User user = userRepository.findById(username).get();
-//        UserDto userDto = transferToDto(user);
-//        return userDto.getRole();
-//    }
-
-    //    public void addRole(String username, String role) {
-//
-//        if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
-//        User user = userRepository.findById(username).get();
-//
-//        user.addRole(new Role(username, role));
-//        userRepository.save(user);
-//    }
-//
-//    public void removeAuthority(String username, String role) {
-//        if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
-//        User user = userRepository.findById(username).get();
-//        Role1 authorityToRemove = user.getRole().stream().filter((a) -> a.getRole().equalsIgnoreCase(role)).findAny().get();
-//        user.removeRole(authorityToRemove);
-//        userRepository.save(user);
-//    }
     public List<UserDto> getAllVolunteerUsers() {
         List<User> users = userRepository.findAll();
         List<UserDto> volunteerUserDtos = new ArrayList<>();
 
         for (User user : users) {
-            if (Role.ROLE_VOLUNTEER == user.getRole()) { // Using enum comparison
+            if (Role.ROLE_VOLUNTEER == user.getRole()) {
                 volunteerUserDtos.add(transferToDto(user));
             }
         }
@@ -118,7 +85,7 @@ public class UserService {
         List<UserDto> parentUserDtos = new ArrayList<>();
 
         for (User user : users) {
-            if (user.getRole() == Role.ROLE_PARENT) { // Using enum comparison
+            if (user.getRole() == Role.ROLE_PARENT) {
                 parentUserDtos.add(transferToDto(user));
             }
         }
@@ -151,7 +118,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setEmail(userDto.getEmail());
         user.setRole(userDto.getRole());
-    userDto.setId(user.getId());
+        userDto.setId(user.getId());
 
         return user;
     }

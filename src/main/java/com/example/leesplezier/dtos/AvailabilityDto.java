@@ -21,19 +21,6 @@ public class AvailabilityDto {
         this.startAt = startAt;
     }
 
-    public String validDay(String day) {
-        if (day.equalsIgnoreCase("monday") ||
-                day.equalsIgnoreCase("tuesday") ||
-                day.equalsIgnoreCase("wednesday") ||
-                day.equalsIgnoreCase("thursday")
-                || day.equalsIgnoreCase("friday") ||
-                day.equalsIgnoreCase("saturday") ||
-                day.equalsIgnoreCase("sunday")) {
-            return day;
-        } else {
-            return "";
-        }
-    }
 
     public String getDay() {
         return day;

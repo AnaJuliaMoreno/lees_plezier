@@ -13,7 +13,6 @@ public class Schedule {
 
 
     //Without the change in sequence value for the ID, default value generated has increments of 50
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "s_generator")
     @SequenceGenerator(name = "s_generator", sequenceName = "schedule_seq", allocationSize = 1)

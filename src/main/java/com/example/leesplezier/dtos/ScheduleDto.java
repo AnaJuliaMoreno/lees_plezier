@@ -15,8 +15,7 @@ public class ScheduleDto {
     @Max(value = 1900, message = "Libraries don't close after 7pm, choose a time between 1300 (1pm) and 1900(7pm)")
     private int closesAt;  //in minutes military style ex: 900 = 9:00
 
-//
-//    private LocationDto locationDto;
+
     public ScheduleDto() {
     }
 

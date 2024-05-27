@@ -90,10 +90,6 @@ public class ReadingFocusService {
         for (ReadingFocus rf : readingFocusList) {
             ReadingFocusDto dto = transferToDto(rf);
 
-// if necessary add this and dependency injection
-            //if(rf.getBooks() !=null){
-            // dto.setBookDto(bookService.transferToDto(rf.getBooks()))
-            // }
             rfDtoList.add(dto);
         }
         return rfDtoList;

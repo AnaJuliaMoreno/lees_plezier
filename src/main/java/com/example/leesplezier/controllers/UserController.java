@@ -39,6 +39,18 @@ public class UserController {
         return ResponseEntity.ok().body(user);
     }
 
+    @GetMapping("/volunteers")
+    public ResponseEntity<List<UserDto>> getAllVolunteerUsers() {
+        List<UserDto> volunteerUsers = userService.getAllVolunteerUsers();
+        return ResponseEntity.ok(volunteerUsers);
+    }
+
+    @GetMapping("/parents")
+    public ResponseEntity<List<UserDto>> getAllParentUsers() {
+        List<UserDto> parentUsers = userService.getAllParentUsers();
+        return ResponseEntity.ok(parentUsers);
+    }
+
     @PostMapping
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserDto userDto, BindingResult br) {
         if (br.hasFieldErrors()) {

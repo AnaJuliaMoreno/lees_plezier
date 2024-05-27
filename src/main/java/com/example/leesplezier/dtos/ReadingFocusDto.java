@@ -7,7 +7,7 @@ public class ReadingFocusDto {
     private String description;
     private String usefulInfo;
 
-//    private Set<Book> books;
+
 
 
     //Default Constructor
@@ -39,12 +39,6 @@ public class ReadingFocusDto {
         this.usefulInfo = usefulInfo;
     }
 
-//    public Set<Book> getBooks() {
-//        return books;
-//    }
-//
-//    public void setBooks(Set<Book> books) {
-//        this.books = books;
-//    }
+
 
 }

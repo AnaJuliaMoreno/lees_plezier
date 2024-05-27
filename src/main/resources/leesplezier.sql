@@ -8,24 +8,22 @@ values (nextval('schedule_seq'), 1800, 'monday', 900),
        (nextval('schedule_seq'), 1700, 'sunday', 1200);
 
 insert into location (id, name, address_loc)
-VALUES (1, 'Neude', 'Neude Square, Utrecht, Netherlands'),
-       (2, 'De Meern', 'De Meern, Utrecht, Netherlands'),
-       (3, 'Hoograven', 'Hoograven, Utrecht, Netherlands'),
-       (4, 'Kanaleneiland', 'Kanaleneiland, Utrecht, Netherlands'),
-       (5, 'Leidsche Rijn Centrum', 'Leidsche Rijn Centrum, Utrecht, Netherlands'),
-       (6, 'Lunetten', 'Lunetten, Utrecht, Netherlands'),
-       (7, 'Oog in Al', 'Oog in Al, Utrecht, Netherlands'),
-       (8, 'Overvecht', 'Overvecht, Utrecht, Netherlands'),
-       (9, 'Tuinwijk', 'Tuinwijk, Utrecht, Netherlands'),
-       (10, 'Vleuten', 'Vleuten, Utrecht, Netherlands'),
-       (11, 'Vleuterweide', 'Vleuterweide, Utrecht, Netherlands'),
-       (12, 'Waterwin', 'Waterwin, Utrecht, Netherlands'),
-       (13, 'Zuilen', 'Zuilen, Utrecht, Netherlands');
+VALUES (nextval('location_seq'), 'Neude', 'Neude Square, Utrecht, Netherlands'),
+       (nextval('location_seq'), 'De Meern', 'De Meern, Utrecht, Netherlands'),
+       (nextval('location_seq'), 'Hoograven', 'Hoograven, Utrecht, Netherlands'),
+       (nextval('location_seq'), 'Kanaleneiland', 'Kanaleneiland, Utrecht, Netherlands'),
+       (nextval('location_seq'), 'Leidsche Rijn Centrum', 'Leidsche Rijn Centrum, Utrecht, Netherlands'),
+       (nextval('location_seq'), 'Lunetten', 'Lunetten, Utrecht, Netherlands'),
+       (nextval('location_seq'), 'Oog in Al', 'Oog in Al, Utrecht, Netherlands'),
+       (nextval('location_seq'), 'Overvecht', 'Overvecht, Utrecht, Netherlands'),
+       (nextval('location_seq'), 'Tuinwijk', 'Tuinwijk, Utrecht, Netherlands'),
+       (nextval('location_seq'), 'Vleuten', 'Vleuten, Utrecht, Netherlands'),
+       (nextval('location_seq'), 'Vleuterweide', 'Vleuterweide, Utrecht, Netherlands'),
+       (nextval('location_seq'), 'Waterwin', 'Waterwin, Utrecht, Netherlands'),
+       (nextval('location_seq'), 'Zuilen', 'Zuilen, Utrecht, Netherlands');
 
 insert into child(id, age, name)
 VALUES (nextval('child_seq'), 10, 'Peter');
--- insert into child(id, age, name, location_id)
--- VALUES (nextval('child_seq'), 10, 'Peter', 1);
 
 
 insert into book(ISBN, target_age, AUTHOR, TITLE)
@@ -67,7 +65,7 @@ insert into book_subjects(book_isbn, book_subjects)
 VALUES (9384593874534, 'adventure'),
        (9384593874534, 'dyslexia');
 
-insert into child_availability_list(start_at, child_id, day)
+insert into child_availability(start_at, child_id, day)
 VALUES ('12:00:00', 1, 'tuesday');
 
 
@@ -76,16 +74,15 @@ VALUES
     --password password
     (nextval('user_seq'), 'JohnDoe', '$2a$10$nnd72WdUamIcghWrl1MRqeB9c22Y86mMLFo3nooslZ.z0vj3e38q6', 'ROLE_VOLUNTEER',
      'john.doe@example.com', 'Doe'),
-    (nextval('user_seq'), 'AliceSmith', 'Alic3_Sm1th', 'ROLE_PARENT', 'alice.smith@example.com', 'Smith'),
-    (nextval('user_seq'), 'MichaelJohnson', 'M1k3_J0hns0n', 'ROLE_PARENT', 'michael.johnson@example.com', 'Johnson'),
-    (nextval('user_seq'), 'EmilyBrown', 'Br0wnEm1ly', 'ROLE_VOLUNTEER', 'emily.brown@example.com', 'Brown'),
-    (nextval('user_seq'), 'DanielRodriguez', 'D@n13l_R0dr1gu3z', 'ROLE_VOLUNTEER', 'daniel.rodriguez@example.com',
-     'Rodriguez'),
     --password parent
     (nextval('user_seq'), 'parent', '$2a$10$oN8vHL6Agnpu7gXbcnPGtOyPiVRDtvk/MwrcAewBlhvk9Tys440SG', 'ROLE_PARENT',
      'parent@email.com', 'parent'),
+    --password volunteer
     (nextval('user_seq'), 'volunteer', '$2a$10$YixaeAi5VU7ZpC/AUBO5AewU8FbBdRK53z0uPH55HeX1Xa0r/grbK', 'ROLE_VOLUNTEER',
      'volunteer@email.com', 'volunteer'),
+    --password admin
+    (nextval('user_seq'), 'admin', '$2a$10$6APMlxMCL7uaiuslBaSkMekEztzrWjq4GyL2MobUBKH007M7v/wGe', 'ROLE_ADMIN',
+     'admin@example.com', 'admin')
 
-    (nextval('user_seq'), 'admin', 'password', 'ROLE_ADMIN', 'admin@example.com', 'admin');
+
 
